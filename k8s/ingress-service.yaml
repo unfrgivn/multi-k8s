@@ -6,15 +6,29 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     # Avoid the Google Compute Engine controller from processing this Ingress.
     kubernetes.io/ingress.class: nginx
+    # SSL certmanager
+    certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
+    # Force SSL redirect
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
+  tls:
+    - hosts:
+        - multi-k8s.fruitfulfertility.org
+        # Can add additional domains here or www version
+      secretName: multi-k8s-fruitfulfertility-org #secretName from certificate.yaml
+
   rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: client-cluster-ip-service
-          servicePort: 3000
-      - path: /api/
-        backend:
-          serviceName: server-cluster-ip-service
-          servicePort: 5000
+    - host: multi-k8s.fruitfulfertility.org
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: client-cluster-ip-service
+            servicePort: 3000
+        - path: /api/
+          backend:
+            serviceName: server-cluster-ip-service
+            servicePort: 5000
+    # Must copy this entire block above for every domain (including www entry)
+    # - host: www.something.com
+    #   http: ...

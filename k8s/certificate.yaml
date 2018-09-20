@@ -4,15 +4,15 @@ metadata:
   name: multi-k8s-fruitfulfertility-org-tls
 spec:
   secretName: multi-k8s-fruitfulfertility-org
-    issuerRef:
-      name: letsencrypt-prod
-      kind: ClusterIssuer
-    commonName: multi-k8s.fruitfulfertility.org
-    dnsNames:
-      - multi-k8s.fruitfulfertility.org
-    acme:
-      config:
-        - http01:
-            ingressClass: nginx
-          domains:
-            - multi-k8s.fruitfulfertility.org
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: multi-k8s.fruitfulfertility.org
+  dnsNames:
+    - multi-k8s.fruitfulfertility.org
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - multi-k8s.fruitfulfertility.org

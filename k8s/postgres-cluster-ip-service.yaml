@@ -1,0 +1,13 @@
+#kubectl apply -f <filename>
+#kubectl get services
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: postgres #references another pod/deployment label
+  ports:
+    - port: 5432 #internal port for other node internal pods to use
+      targetPort: 5432 #matches container port in our pod

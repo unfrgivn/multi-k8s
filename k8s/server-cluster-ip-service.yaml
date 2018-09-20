@@ -1,0 +1,13 @@
+#kubectl apply -f <filename>
+#kubectl get services
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: server #references another pod/deployment label
+  ports:
+    - port: 5000 #internal port for other node internal pods to use
+      targetPort: 5000 #matches container port in our pod

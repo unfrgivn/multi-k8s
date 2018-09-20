@@ -1,0 +1,43 @@
+#kubectl apply -f <filename>
+#kubectl get pods
+
+#Making a secret object for postgres password
+#kubectl create secret generic <secret_name> --from-literal <key=value>
+#kubectl get secrets
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server #arbitrary key/value pair to link to other pods and services
+    spec:
+      containers:
+        - name: server
+          image: unfrgivn/multi-server
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service #name of cluster IP service you're accessing
+            - name: REDIS_PORT
+              value: '6379'
+            - name: PGUSER
+              value: postgres
+            - name: PGHOST
+              value: postgres-cluster-ip-service #name of cluster IP service you're accessing
+            - name: PGPORT
+              value: '5432'
+            - name: PGDATABASE
+              value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword #name of secret object
+                  key: PGPASSWORD #key inside of secret

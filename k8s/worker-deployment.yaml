@@ -1,0 +1,24 @@
+#kubectl apply -f <filename>
+#kubectl get pods
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: worker
+  template:
+    metadata:
+      labels:
+        component: worker #arbitrary key/value pair to link to other pods and services
+    spec:
+      containers:
+        - name: worker
+          image: unfrgivn/multi-worker
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service #name of cluster IP service you're accessing
+            - name: REDIS_PORT
+              value: '6379'

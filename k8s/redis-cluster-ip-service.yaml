@@ -1,0 +1,13 @@
+#kubectl apply -f <filename>
+#kubectl get services
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cluster-ip-service
+spec:
+  type: ClusterIP
+  selector:
+    component: redis #references another pod/deployment label
+  ports:
+    - port: 6379 #internal port for other node internal pods to use
+      targetPort: 6379 #matches container port in our pod
